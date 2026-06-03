@@ -11,8 +11,9 @@ services:
       - key: PYTHON_VERSION
         value: 3.12.0
 
-  - type: staticSite
+  - type: web
     name: browser-agent-ui
+    runtime: static
     rootDir: ui
     buildCommand: npm install && npm run build
     staticPublishPath: dist
