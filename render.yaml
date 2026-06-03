@@ -11,15 +11,11 @@ services:
       - key: PYTHON_VERSION
         value: 3.12.0
 
-  - type: web
+  - type: static
     name: browser-agent-ui
-    runtime: node
     rootDir: ui
     buildCommand: npm install && npm run build
     staticPublishPath: dist
     envVars:
       - key: VITE_WS_URL
-        fromService:
-          name: browser-agent-api
-          type: web
-          property: host
+        sync: false
