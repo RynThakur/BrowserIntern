@@ -1,0 +1,141 @@
+.landing-root {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  color: white;
+  z-index: 10;
+  overflow: hidden;
+  font-family: var(--font-sans, system-ui);
+}
+
+.landing-bg-image {
+  position: absolute;
+  inset: 0;
+  
+  /* ADD YOUR BACKGROUND IMAGE HERE */
+ background-image: url('../assets/bg.jpg');
+  
+  background-size: cover;
+  background-position: center;
+  z-index: -2;
+  
+  /* OVERRIDE ALL BLUR: Forces the image to be crystal clear */
+  filter: none !important; 
+  -webkit-filter: none !important;
+  backdrop-filter: none !important;
+}
+
+.landing-bg-overlay {
+  position: absolute;
+  inset: 0;
+  
+  /* Light radial gradient to keep text readable without muddying the image */
+  background: radial-gradient(circle at center, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0.85) 100%);
+  z-index: -1;
+  pointer-events: none; /* Ensures the overlay cannot block clicks */
+}
+
+.landing-content {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  position: relative;
+  z-index: 1;
+}
+
+/* --- Top Navigation Setup --- */
+.landing-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+  padding: 40px 0;
+  position: relative;
+  z-index: 50; /* Forces header above absolutely everything to guarantee clickability */
+}
+
+.header-logo {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+  filter: brightness(0) invert(1); 
+}
+
+.header-nav {
+  display: flex;
+  align-items: center;
+  gap: 32px; /* Primary spacing */
+}
+
+.header-nav a {
+  cursor: pointer;
+  text-decoration: none;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 14px;
+  padding: 10px 12px; /* Makes the clickable area much larger */
+  margin: 0 10px; /* Fallback spacing in case 'gap' isn't rendering */
+  display: inline-block;
+  transition: color 0.2s;
+}
+
+.header-nav a:hover {
+  color: white;
+}
+
+/* --- Central Text Setup --- */
+.landing-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 0 20px;
+  margin-top: -8vh; 
+  position: relative;
+  z-index: 10;
+}
+
+.hero-title {
+  font-size: clamp(2.5rem, 4.5vw, 4rem);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  margin: 0 0 24px 0;
+}
+
+/* Yellow Highlight */
+.highlight-yellow {
+  color: #000000;
+  background-color: #fde047; 
+  padding: 0 16px;
+  
+  display: inline-block;
+  font-weight: 600;
+  margin: 0 4px;
+}
+
+.hero-subtitle {
+  font-size: clamp(0.9rem, 1.2vw, 1.1rem);
+  color: rgba(255, 255, 255, 0.75);
+  line-height: 1.6;
+  margin: 0 0 40px 0;
+  max-width: 500px;
+}
+
+/* Pill Button Setup */
+.hero-cta {
+  background: white;
+  color: black;
+  border: none;
+  border-radius: 999px;
+  padding: 12px 24px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: transform 0.1s;
+}

@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react'
 import StepTrace from './components/StepTrace'
 import ScreenshotPanel from './components/ScreenshotPanel'
+import LandingPage from './components/LandingPage' // <-- Added new import
 
 import browserInternLogo from './assets/browserInternLogo.png'
 import bgVideo from './assets/bg.mp4'
@@ -17,6 +18,10 @@ const EXAMPLE_TASKS = [
 ]
 
 export default function App() {
+  // --- New State for Landing Page ---
+  const [hasEntered, setHasEntered] = useState(false)
+
+  // --- Existing State ---
   const [task, setTask] = useState('')
   const [steps, setSteps] = useState([])
   const [screenshot, setShot] = useState(null)
@@ -85,7 +90,7 @@ export default function App() {
 
   return (
     <div className="app">
-      {/* Background Video */}
+      {/* Background Video plays persistently across both views */}
       <video
         className="background-video"
         autoPlay
@@ -99,137 +104,126 @@ export default function App() {
       {/* Dark Overlay */}
       <div className="background-overlay" />
 
-      <header className="header">
-        <div className="brand-icon">
-          <img
-            src={browserInternLogo}
-            alt="Browser Agent Logo"
-            className="brand-logo"
-          />
-        </div>
+      {/* Conditional Rendering: Landing Page vs Main Agent UI */}
+      {!hasEntered ? (
+        <LandingPage onEnter={() => setHasEntered(true)} />
+      ) : (
+        <>
+          <header className="header">
+            <div className="brand-icon">
+              <img
+                src={browserInternLogo}
+                alt="Browser Agent Logo"
+                className="brand-logo"
+              />
+            </div>
 
-        <div>
-          <div className="brand-title">
-            Browser Intern
-          </div>
-
-          <div className="brand-subtitle">
-            Autonomous browser automation
-          </div>
-        </div>
-
-        <div className="status-group">
-          {['idle', 'running', 'done', 'error'].map((s) => (
-            <span
-              key={s}
-              className={`status-pill ${
-                status === s ? 'status-active' : ''
-              }`}
-            >
-              {s}
-            </span>
-          ))}
-        </div>
-      </header>
-
-      <section className="task-section">
-        <div className="task-card">
-          <div className="task-label">
-            Describe what the agent should do
-          </div>
-
-          <div className="task-row">
-            <textarea
-              className="task-input"
-              value={task}
-              onChange={(e) => setTask(e.target.value)}
-              onKeyDown={(e) => {
-                if (
-                  e.key === 'Enter' &&
-                  e.metaKey
-                ) {
-                  startAgent()
-                }
-              }}
-              placeholder="Go to Hacker News and summarize the top stories..."
-              disabled={isRunning}
-              rows={3}
-            />
-
-            <button
-              className="run-btn"
-              onClick={
-                isRunning
-                  ? stopAgent
-                  : startAgent
-              }
-              disabled={
-                !task.trim() && !isRunning
-              }
-            >
-              {isRunning
-                ? 'Stop Agent'
-                : 'Run Agent'}
-            </button>
-          </div>
-
-          <div className="examples">
-            {EXAMPLE_TASKS.map((t) => (
-              <button
-                key={t}
-                className="example-btn"
-                onClick={() => setTask(t)}
-                disabled={isRunning}
-              >
-                {t.length > 42
-                  ? `${t.slice(0, 42)}...`
-                  : t}
-              </button>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {result && (
-        <div className="result-banner">
-          <strong>
-            {status === 'done'
-              ? 'Result: '
-              : 'Error: '}
-          </strong>
-
-          {result}
-        </div>
-      )}
-
-      <div className="main-grid">
-        <div className="panel">
-          <div className="panel-header">
-            Step Trace
-            {steps.length > 0 &&
-              ` (${steps.length})`}
-          </div>
-
-          <div className="panel-body trace-scroll">
-            {steps.length === 0 ? (
-              <div className="empty-state">
-                Agent activity will appear here in
-                real time
+            <div>
+              <div className="brand-title">
+                Browser Intern
               </div>
-            ) : (
-              <StepTrace steps={steps} />
-            )}
 
-            <div ref={traceEndRef} />
+              <div className="brand-subtitle">
+                Autonomous browser automation
+              </div>
+            </div>
+
+            <div className="status-group">
+              {['idle', 'running', 'done', 'error'].map((s) => (
+                <span
+                  key={s}
+                  className={`status-pill ${
+                    status === s ? 'status-active' : ''
+                  }`}
+                >
+                  {s}
+                </span>
+              ))}
+            </div>
+          </header>
+
+          <section className="task-section">
+            <div className="task-card">
+              <div className="task-label">
+                Describe what the agent should do
+              </div>
+
+              <div className="task-row">
+                <textarea
+                  className="task-input"
+                  value={task}
+                  onChange={(e) => setTask(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' && e.metaKey) {
+                      startAgent()
+                    }
+                  }}
+                  placeholder="Go to Hacker News and summarize the top stories..."
+                  disabled={isRunning}
+                  rows={3}
+                />
+
+                <button
+                  className="run-btn"
+                  onClick={isRunning ? stopAgent : startAgent}
+                  disabled={!task.trim() && !isRunning}
+                >
+                  {isRunning ? 'Stop Agent' : 'Run Agent'}
+                </button>
+              </div>
+
+              <div className="examples">
+                {EXAMPLE_TASKS.map((t) => (
+                  <button
+                    key={t}
+                    className="example-btn"
+                    onClick={() => setTask(t)}
+                    disabled={isRunning}
+                  >
+                    {t.length > 42 ? `${t.slice(0, 42)}...` : t}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </section>
+
+          {result && (
+            <div className="result-banner">
+              <strong>
+                {status === 'done' ? 'Result: ' : 'Error: '}
+              </strong>
+              {result}
+            </div>
+          )}
+
+          <div className="main-grid">
+            <div className="panel">
+              <div className="panel-header">
+                Step Trace
+                {steps.length > 0 && ` (${steps.length})`}
+              </div>
+
+              <div className="panel-body trace-scroll">
+                {steps.length === 0 ? (
+                  <div className="empty-state">
+                    Agent activity will appear here in real time
+                  </div>
+                ) : (
+                  <StepTrace steps={steps} />
+                )}
+
+                <div ref={traceEndRef} />
+              </div>
+            </div>
+
+            <ScreenshotPanel
+              screenshot={screenshot}
+              step={steps.length}
+              status={status}
+            />
           </div>
-        </div>
-
-        <ScreenshotPanel
-          screenshot={screenshot}
-          step={steps.length}
-          status={status}
-        />
-      </div>
+        </>
+      )}
     </div>
   )
 }
