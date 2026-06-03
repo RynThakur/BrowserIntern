@@ -42,7 +42,7 @@ export default function ScreenshotPanel({ screenshot, step, status }) {
           />
         ) : (
           <div style={{ color: 'var(--muted)', fontSize: 13, textAlign: 'center' }}>
-            <div style={{ fontSize: 32, marginBottom: 8 }}>🌐</div>
+            <div style={{ fontSize: 32, marginBottom: 8 }}></div>
             Screenshot will appear here when the agent starts
           </div>
         )}
