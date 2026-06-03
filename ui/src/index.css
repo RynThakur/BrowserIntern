@@ -1,0 +1,62 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --bg: #050505;
+  --surface: rgba(255, 255, 255, 0.03);
+  --surface2: rgba(255, 255, 255, 0.05);
+
+  --border: rgba(255, 255, 255, 0.08);
+
+  --accent: #ffffff;
+  --accent-dark: #d1d5db;
+
+  --success: #22c55e;
+  --warning: #f59e0b;
+  --danger: #ef4444;
+
+  --text: #fafafa;
+  --muted: #8b8b8b;
+
+  --radius: 20px;
+
+  --font:
+    Inter,
+    SF Pro Display,
+    system-ui,
+    sans-serif;
+}
+
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+body::before {
+  content: "";
+
+  position: fixed;
+  inset: 0;
+
+  background:
+    radial-gradient(circle at top left,
+      rgba(255,255,255,.08),
+      transparent 35%),
+    radial-gradient(circle at bottom right,
+      rgba(255,255,255,.04),
+      transparent 40%);
+
+  pointer-events: none;
+}
+
+#root {
+  height: 100vh;
+}
