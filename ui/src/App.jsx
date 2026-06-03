@@ -8,7 +8,9 @@ import bgVideo from './assets/bg.mp4'
 
 import './App.css'
 
-const WS_URL = 'ws://localhost:8000/ws/run'
+const WS_URL = import.meta.env.VITE_WS_URL
+  ? `wss://${import.meta.env.VITE_WS_URL}/ws/run`
+  : 'ws://localhost:8000/ws/run'
 
 const EXAMPLE_TASKS = [
   'Go to Youtube.com',
